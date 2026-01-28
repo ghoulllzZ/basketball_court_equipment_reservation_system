@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 配置Mabatis映射文件 -->
+<mapper namespace="com.mapper.PurchasesMapper">
+    <resultMap type="com.entity.Purchases" id="purchasesMap">
+        <id property="purchasesid" column="purchasesid"/>
+        <result property="membersid" column="membersid"/>
+        <result property="thinginfoid" column="thinginfoid"/>
+        <result property="addtime" column="addtime"/>
+        <result property="purchase_time" column="purchase_time"/>
+        <result property="status" column="status"/>
+        <result property="memo" column="memo"/>
+        <result property="username" column="username"/>
+        <result property="realname" column="realname"/>
+    </resultMap>
+    <!-- 插入语句 Mapper通过id调用此配置 -->
+    <insert id="insert" parameterType="purchases">
+		insert into
+		purchases( membersid , thinginfoid , addtime , status , memo,purchase_time )
+		values(  #{membersid} , #{thinginfoid} , #{addtime} , #{status}
+		, #{memo}, #{purchase_time} )
+	</insert>
+    <!-- 更新语句 Mapper通过id调用此配置 -->
+    <update id="update" parameterType="purchases">
+		update purchases set
+		membersid=#{membersid} , thinginfoid=#{thinginfoid} ,
+		addtime=#{addtime} ,
+		status=#{status} , memo=#{memo} , purchase_time=#{purchase_time} where
+		purchasesid=#{purchasesid}
+	</update>
+    <!-- 按主键删除 Mapper通过id调用此配置 -->
+    <delete id="delete" parameterType="String">
+		delete from purchases where
+		purchasesid = #{purchasesid}
+	</delete>
+    <!-- 查询全部信息 Mapper通过id调用此配置 -->
+    <select id="getAll" parameterType="map" resultMap="purchasesMap">
+        select purchases.* , members.username as username, thinginfo.thinginfoname as thinginfoname,
+        members.realname from
+        purchases
+        left join members on members.membersid=purchases.membersid
+        left join thinginfo on purchases.thinginfoid = thinginfo.thinginfoid
+
+        where 1=1
+
+
+        <if test="thinginfoid_list != null and thinginfoid_list.size > 0">
+            and purchases.thinginfoid in
+            <foreach item="item" collection="thinginfoid_list" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+
+        </if>
+
+
+        <if test="thinginfoid != null and thinginfoid != ''">
+            and purchases.thinginfoid =#{thinginfoid}
+        </if>
+        <if test="membersid != null and membersid != ''">
+            and purchases.membersid =#{membersid}
+        </if>
+        <if test="keyword != null and keyword != ''">
+            and
+            (
+            members.username like CONCAT('%',#{keyword},'%') or
+            members.realname like CONCAT('%',#{keyword},'%')
+
+
+            )
+        </if>
+        order by purchasesid desc
+        <if test="(start != null and start != '') or start==0 ">
+            <if test=" limit != null and limit != ''">
+                limit #{start},#{limit}
+            </if>
+        </if>
+
+    </select>
+
+
+    <!--获取 预约 成功的数量  and status!='取消'-->
+
+    <select id="getPurchasesNumber" parameterType="int" resultType="int">
+        select count(1) from purchases
+        where
+
+
+              purchases.thinginfoid =#{thinginfoid}
+
+          
+
+
+
+
+    </select>
+
+
+    <!-- 统计 获取 总数    用于分页-->
+
+    <select id="getRowSize" parameterType="map" resultType="int">
+        select count(1) from
+        purchases
+        left join members on members.membersid=purchases.membersid
+        left join thinginfo on purchases.thinginfoid = thinginfo.thinginfoid
+
+        where 1=1
+
+
+        <if test="thinginfoid_list != null and thinginfoid_list.size > 0">
+            and purchases.thinginfoid in
+            <foreach item="item" collection="thinginfoid_list" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+
+        </if>
+
+
+        <if test="thinginfoid != null and thinginfoid != ''">
+            and purchases.thinginfoid =#{thinginfoid}
+        </if>
+        <if test="membersid != null and membersid != ''">
+            and purchases.membersid =#{membersid}
+        </if>
+        <if test="keyword != null and keyword != ''">
+            and
+            (
+            members.username like CONCAT('%',#{keyword},'%') or
+            members.realname like CONCAT('%',#{keyword},'%')
+
+
+            )
+        </if>
+        order by purchasesid desc
+
+
+    </select>
+    <!-- 按主键查询 Mapper通过id调用此配置 -->
+    <select id="getById" parameterType="String" resultMap="purchasesMap">
+		select purchases.* , members.username  as username, thinginfo.thinginfoname  as thinginfoname,
+        members.realname from
+        purchases
+         left join members on members.membersid=purchases.membersid
+         left join thinginfo on  purchases.thinginfoid = thinginfo.thinginfoid
+
+        where 1=1  and
+		purchasesid=#{purchasesid}
+	</select>
+    <!-- 按条件精确查询 Mapper通过id调用此配置 -->
+    <select id="getByCond" parameterType="purchases" resultMap="purchasesMap">
+        select purchases.* , members.username as username, thinginfo.thinginfoname as thinginfoname,
+        members.realname from
+        purchases
+        left join members on members.membersid=purchases.membersid
+        left join thinginfo on purchases.thinginfoid = thinginfo.thinginfoid
+
+        where 1=1
+        <if test="thinginfoid_list != null and thinginfoid_list.size > 0">
+            and purchases.thinginfoid in
+            <foreach item="item" collection="thinginfoid_list" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+
+        </if>
+        <if test="membersid != null and '' != membersid">
+            and purchases.membersid = #{membersid}
+        </if>
+        <if test="thinginfoid != null and '' != thinginfoid">
+            and purchases.thinginfoid = #{thinginfoid}
+        </if>
+        <if test="addtime != null and '' != addtime">
+            and purchases.addtime = #{addtime}
+        </if>
+        <if test="status != null and '' != status   or 0 == status">
+            and purchases.status = #{status}
+        </if>
+        <if test="memo != null and '' != memo">
+            and purchases.memo = #{memo}
+        </if>
+    </select>
+    <!-- 按条件模糊查询 Mapper通过id调用此配置 -->
+    <select id="getByLike" parameterType="purchases" resultMap="purchasesMap">
+        select purchases.* , members.username as username, thinginfo.thinginfoname as thinginfoname,
+        members.realname from
+        purchases
+        left join members on members.membersid=purchases.membersid
+        left join thinginfo on purchases.thinginfoid = thinginfo.thinginfoid
+
+        where 1=1
+        <if test="thinginfoid_list != null and thinginfoid_list.size > 0">
+            and purchases.thinginfoid in
+            <foreach item="item" collection="thinginfoid_list" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+
+
+        </if>
+        <if test="membersid != null and '' != membersid">
+            and purchases.membersid like CONCAT('%', CONCAT(#{membersid}, '%'))
+        </if>
+        <if test="thinginfoid != null and '' != thinginfoid">
+            and purchases.thinginfoid like CONCAT('%', CONCAT(#{thinginfoid}, '%'))
+        </if>
+        <if test="addtime != null and '' != addtime">
+            and purchases.addtime like CONCAT('%', CONCAT(#{addtime}, '%'))
+        </if>
+        <if test="status != null and '' != status  or 0 == status">
+            and purchases.status like CONCAT('%', CONCAT(#{status}, '%'))
+        </if>
+        <if test="memo != null and '' != memo">
+            and purchases.memo like CONCAT('%', CONCAT(#{memo}, '%'))
+        </if>
+    </select>
+</mapper>
+
+

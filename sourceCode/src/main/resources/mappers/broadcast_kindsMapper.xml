@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!-- 配置Mabatis映射文件 -->
+<mapper namespace="com.mapper.Broadcast_kindsMapper">
+    <resultMap type="com.entity.Broadcast_kinds" id="broadcast_kindsMap">
+        <id property="broadcast_kindsid" column="broadcast_kindsid"/>
+        <result property="broadcast_kindsname" column="broadcast_kindsname"/>
+    </resultMap>
+    <!-- 插入语句 Mapper通过id调用此配置 -->
+    <insert id="insert" parameterType="broadcast_kinds">
+		insert into
+		broadcast_kinds(  broadcast_kindsname )
+		 values(		#{broadcast_kindsname} )
+	</insert>
+    <!-- 更新语句 Mapper通过id调用此配置 -->
+    <update id="update" parameterType="broadcast_kinds">
+		 update broadcast_kinds set
+		broadcast_kindsname=#{broadcast_kindsname} where broadcast_kindsid=#{broadcast_kindsid}
+	</update>
+    <!-- 按主键删除 Mapper通过id调用此配置 -->
+    <delete id="delete" parameterType="String">
+		delete from broadcast_kinds where
+		broadcast_kindsid = #{broadcast_kindsid}
+	</delete>
+    <!-- 查询全部信息 Mapper通过id调用此配置 -->
+    <select id="getAll" parameterType="map" resultMap="broadcast_kindsMap">
+        select * from broadcast_kinds
+        where 1=1
+        <if test="keyword != null and keyword != ''">
+            and
+            (
+            broadcast_kindsname like CONCAT('%',#{keyword},'%')
+
+            )
+        </if>
+
+        <if test="(start != null and start != '') or start==0 ">
+            <if test=" limit != null and limit != ''">
+                limit #{start},#{limit}
+            </if>
+        </if>
+
+    </select>
+
+
+    <!-- 统计 获取 总数    用于分页-->
+
+    <select id="getRowSize" parameterType="map" resultType="int">
+        select count(1) from broadcast_kinds
+        where 1=1
+        <if test="keyword != null and keyword != ''">
+            and
+            (
+            broadcast_kindsname like CONCAT('%',#{keyword},'%')
+
+            )
+        </if>
+
+
+    </select>
+    <!-- 按主键查询 Mapper通过id调用此配置 -->
+    <select id="getById" parameterType="String" resultMap="broadcast_kindsMap">
+		select a.* from broadcast_kinds a where broadcast_kindsid=#{broadcast_kindsid} order by broadcast_kindsid
+		desc
+	</select>
+    <!-- 按条件精确查询 Mapper通过id调用此配置 -->
+    <select id="getByCond" parameterType="broadcast_kinds" resultMap="broadcast_kindsMap">
+        select a.* from broadcast_kinds a where 1=1
+        <if test="broadcast_kindsname != null and '' != broadcast_kindsname">
+            and a.broadcast_kindsname = #{broadcast_kindsname}
+        </if>
+    </select>
+    <!-- 按条件模糊查询 Mapper通过id调用此配置 -->
+    <select id="getByLike" parameterType="broadcast_kinds" resultMap="broadcast_kindsMap">
+        select a.* from broadcast_kinds a where 1=1
+        <if test="broadcast_kindsname != null and '' != broadcast_kindsname">
+            and a.broadcast_kindsname like CONCAT('%', CONCAT(#{broadcast_kindsname},
+            '%'))
+        </if>
+    </select>
+</mapper>
+
+

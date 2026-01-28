@@ -1,0 +1,9 @@
+ 
+src\main\resources\application.yml  修改数据库密码
+
+管理员manager密码111111
+
+ 
+普通 用户  test 密码111111 
+
+容器tomcat9.0.41

@@ -1,0 +1,165 @@
+body {
+    background-color: #f2f2f2;
+    color: #333;
+    color: rgba(0, 0, 0, .85);
+    padding: 1% 10%;
+    font: 14px Helvetica Neue, Helvetica, PingFang SC, Tahoma, Arial, sans-serif;
+}
+
+.layui-form-label {
+    width: 90px;
+    font-weight: 400;
+}
+
+.layui-input-inline {
+    margin-left: 10px;
+}
+
+.layui-input-block {
+    margin-left: 130px !important;;
+}
+
+
+
+.layui-btn {
+    border-radius: 18px;
+}
+
+.layui-input, .layui-select, .layui-textarea {
+    border-radius: 18px !important;
+    font-family: "Microsoft YaHei", "Hiragino Sans GB", STXihei, "simsun", "sans-serif";
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.03)
+
+}
+
+.search_list {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.layui-table-tool {
+    text-align: center;
+}
+
+.layui-table-tool .layui-table-tool-temp {
+    font-weight: bold;
+    font-size: 2em;
+    text-shadow: 0 10px 10px rgba(0, 0, 0, .5);
+    padding: 0;
+
+}
+
+.layui-table-tool-self {
+    display: none; /*隐藏工具栏*/
+    position: relative;
+    text-align: center;
+    padding: 10px 0;
+    margin: 0 auto;
+    right: 8px
+}
+
+.layui-table {
+    color: #666;
+    margin: 0;
+}
+
+.layui-table, .layui-table-view {
+    border-radius: 8px !important;
+
+    margin: 10px 0
+}
+
+
+.layui-table-view .layui-table td, .layui-table-view .layui-table th {
+    padding: 5px 0;
+
+}
+
+
+.layui-table-cell, .layui-table-tool-panel li {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap
+}
+
+
+.layui-form-select dl {
+
+    border: 1px solid #d2d2d2;
+
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .12);
+    z-index: 9999999; /**防止下拉框被遮盖*/
+
+}
+
+
+.layui_form_web {
+    padding:0 20%;/*表单宽度*/
+}
+
+.layui-elem-field legend {
+    margin-left: 35%;
+}
+
+.layui-badge-rim, .layui-border, .layui-colla-content, .layui-colla-item, .layui-collapse, .layui-elem-field, .layui-form-pane .layui-form-item[pane], .layui-form-pane .layui-form-label, .layui-input, .layui-input-split, .layui-panel, .layui-quote-nm, .layui-select, .layui-tab-bar, .layui-tab-card, .layui-tab-title, .layui-tab-title .layui-this::after, .layui-textarea {
+    border-color: #ffffff;
+}
+
+.layui_form_web .layui-form-label {
+    width: 100px !important;
+    font-weight: 400;
+}
+
+.layui_form_web .layui-form-label::after {
+    content: ":";
+}
+
+.layui_form_web .layui-input-inline {
+    margin-left: 10px;
+}
+
+.layui_form_web .layui-input-block {
+    margin-left: 130px !important;;
+}
+
+
+.layui_form_web .layui-input-block .layui-input,
+.layui_form_web .layui-input-block .layui-form-select,
+.layui_form_web .layui-input-block .layui-textarea {
+    width: 300px;
+}
+.layui_form_web .layui-input-block .layui-btn {
+    margin-left: 15%;
+}
+
+
+/*滚动条样式*/
+::-webkit-scrollbar-track-piece {
+    width: 6px;
+    background: #F5F5F5;
+    border: 0;
+    border-radius: 3px;
+
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px; /*此值会引起select下拉后有个边  6px不会有,但6px有横向拉动时太低了,鼠标不好点*/
+    border: 0;
+    background: #F5F5F5;
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #999;
+    border: 0;
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #999
+}
+
+

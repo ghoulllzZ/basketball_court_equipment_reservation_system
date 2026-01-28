@@ -1,0 +1,58 @@
+#是否填充登录用户名和密码
+auto-fill-login-username: true
+
+
+#是否启用验证码
+is-login-code: true
+
+#tomcat端口号
+server:
+    port: 8083
+
+    #注入场地器材的名称(浏览器访问后辍)
+    servlet:
+        context-path: /projectinfo
+
+
+        multipart:
+            max-file-size: 100MB
+            max-request-size: 100MB
+
+
+#数据源
+spring:
+    datasource:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+
+        #下面这一句修改数据库名称  将db_projectinfo修改了就可以了
+        url: jdbc:mysql://localhost:3306/bs_data?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+        username: root
+        #下面这一句修改数据库密码
+        password: 123456
+    #spring.mvc相关页面解析器配置
+    #定义前端页面保存地址
+    mvc:
+        view:
+            prefix: /
+
+            #可为空,方便实现自已的依据扩展名来选择视图解释类的逻辑
+            suffix: .jsp
+
+
+
+#mybatis 扫描SQL xml文件
+mybatis:
+    mapper-locations: classpath:mappers/*.xml
+    #实体扫描，多个package用逗号或者分号分隔
+    type-aliases-package: com.entity
+    #不要使用驼峰命名转换  不修改下划线属性
+    configuration:
+        map-underscore-to-camel-case: false
+        cache-enabled: false
+        call-setters-on-nulls: true
+
+
+
+        #控制台打印sql语句的方法
+        log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+

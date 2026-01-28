@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 配置Mabatis映射文件 -->
+<mapper namespace="com.mapper.GoodsinfoMapper">
+    <resultMap type="com.entity.Goodsinfo" id="goodsinfoMap">
+        <id property="goodsinfoid" column="goodsinfoid"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="countrequire" property="countrequire" jdbcType="INTEGER"/>
+        <result column="iscooled" property="iscooled" jdbcType="INTEGER"/>
+        <result column="goodsinfoname" property="goodsinfoname" jdbcType="LONGVARCHAR"/>
+        <result column="image" property="image" jdbcType="LONGVARCHAR"/>
+        <result column="remark" property="remark" jdbcType="LONGVARCHAR"/>
+        <result column="createdate" property="createdate" jdbcType="LONGVARCHAR"/>
+
+        <result column="goodsinfoprice" property="goodsinfoprice"/>
+        <result column="goodsinfo_1" property="goodsinfo_1"/>
+        <result column="goodsinfo_2" property="goodsinfo_2"/>
+        <result column="goodsinfo_3" property="goodsinfo_3"/>
+        <result column="goodsinfo_4" property="goodsinfo_4"/>
+        <result column="goodsinfo_5" property="goodsinfo_5"/>
+        <result column="goodsinfo_6" property="goodsinfo_6"/>
+
+
+     </resultMap>
+    <!-- 插入语句 DAO通过id调用此配置 -->
+    <insert id="insert" parameterType="goodsinfo">
+        insert into goodsinfo ( goodsinfoid,  status, countrequire,
+                                iscooled, goodsinfoname, image,
+                                remark, createdate, goodsinfoprice
+                              , goodsinfo_1
+                              , goodsinfo_2
+                              , goodsinfo_3
+                              , goodsinfo_4
+                              , goodsinfo_5
+                              , goodsinfo_6)
+        values (#{goodsinfoid,jdbcType=INTEGER},  #{status,jdbcType=INTEGER},
+                #{countrequire,jdbcType=INTEGER},
+                #{iscooled,jdbcType=INTEGER}, #{goodsinfoname,jdbcType=LONGVARCHAR}, #{image,jdbcType=LONGVARCHAR},
+                #{remark,jdbcType=LONGVARCHAR}, #{createdate,jdbcType=LONGVARCHAR}
+                   , #{goodsinfoprice}, #{goodsinfo_1}, #{goodsinfo_2}, #{goodsinfo_3}, #{goodsinfo_4}, #{goodsinfo_5},
+                #{goodsinfo_6})
+    </insert>
+    <!-- 更新语句 DAO通过id调用此配置 -->
+    <update id="update" parameterType="goodsinfo">
+        update goodsinfo
+        set
+            status         = #{status,jdbcType=INTEGER},
+            countrequire   = #{countrequire,jdbcType=INTEGER},
+            iscooled       = #{iscooled,jdbcType=INTEGER},
+            goodsinfoname  = #{goodsinfoname,jdbcType=LONGVARCHAR},
+            image          = #{image,jdbcType=LONGVARCHAR},
+            remark         = #{remark,jdbcType=LONGVARCHAR},
+            createdate     = #{createdate,jdbcType=LONGVARCHAR},
+
+
+            goodsinfoprice = #{goodsinfoprice},
+            goodsinfo_1    = #{goodsinfo_1},
+            goodsinfo_2    = #{goodsinfo_2},
+            goodsinfo_3    = #{goodsinfo_3},
+            goodsinfo_4    = #{goodsinfo_4},
+            goodsinfo_5    = #{goodsinfo_5},
+            goodsinfo_6    = #{goodsinfo_6}
+
+        where goodsinfoid = #{goodsinfoid}
+    </update>
+    <!-- 按主键删除 DAO通过id调用此配置 -->
+    <delete id="delete" parameterType="String">
+        delete
+        from goodsinfo
+        where goodsinfoid = #{goodsinfoid}
+    </delete>
+    <!-- 查询全部信息 DAO通过id调用此配置 -->
+    <select id="getAll" parameterType="map" resultMap="goodsinfoMap">
+        select
+        goodsinfo.*
+        from goodsinfo
+
+
+        where 1=1
+        <if test="keyword != null and keyword != ''">
+            and
+            (
+            goodsinfoname like CONCAT('%',#{keyword},'%')
+            )
+        </if>
+        <if test="status != null and status != ''  ">
+            and
+            goodsinfo.status =#{status}
+        </if>
+        <if test="iscooled != null and iscooled != ''  or 0 == iscooled">
+            and
+            goodsinfo.iscooled =#{iscooled}
+        </if>
+
+
+        order by goodsinfo.goodsinfoid desc
+        <if test="(start != null and start != '') or start==0 ">
+            <if test=" limit != null and limit != ''">
+                limit #{start},#{limit}
+            </if>
+        </if>
+    </select>
+
+    <!-- 统计 获取 总数    用于分页-->
+    <select id="getRowSize" parameterType="map" resultType="int" useCache="false">
+        SELECT count(1)
+        FROM goodsinfo
+
+
+
+        where 1=1
+        <if test="status != null and status != ''  ">
+            and
+            goodsinfo.status =#{status}
+        </if>
+        <if test="iscooled != null and iscooled != ''  or 0 == iscooled">
+            and
+            goodsinfo.iscooled =#{iscooled}
+        </if>
+
+
+        <if test="keyword != null and keyword != ''">
+            and
+            (
+            goodsinfoname like CONCAT('%',#{keyword},'%')
+            )
+        </if>
+        /*分词去数据库查询*/
+        <if test="posts_keyword_list != null and posts_keyword_list.size > 0">
+            and
+
+            <foreach collection="posts_keyword_list" item="item" index="index" separator="OR">
+                `remark` LIKE CONCAT('%',#{item},'%')
+            </foreach>
+
+        </if>
+
+    </select>
+
+
+    <!-- 按主键查询 DAO通过id调用此配置 -->
+    <select id="getById" parameterType="String" resultMap="goodsinfoMap">
+        select goodsinfo.*
+        from goodsinfo
+
+
+
+
+        where goodsinfo.goodsinfoid = #{goodsinfoid}
+    </select>
+
+
+
+    <!-- 按条件精确查询 DAO通过id调用此配置 -->
+    <select id="getByCond" parameterType="goodsinfo" resultMap="goodsinfoMap">
+        select a.*
+        from goodsinfo a
+        where 1 = 1
+        order by goodsinfoid desc
+
+    </select>
+    <!-- 按条件模糊查询 DAO通过id调用此配置 -->
+    <select id="getByLike" parameterType="goodsinfo" resultMap="goodsinfoMap">
+        select a.*
+        from goodsinfo a
+        where 1 = 1
+        order by goodsinfoid desc
+    </select>
+
+</mapper>
